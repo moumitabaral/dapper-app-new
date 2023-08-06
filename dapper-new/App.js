@@ -28,6 +28,7 @@ import {
   Poppins_900Black,
   Poppins_900Black_Italic,
 } from '@expo-google-fonts/poppins';
+import BarberBooking from './screens/customer/BarberBooking';
 
 export const StoreContext = React.createContext(null)
 
@@ -86,8 +87,16 @@ export default function App() {
       <NavigationContainer>
         <StoreContext.Provider value={{state, setState}}> 
           <MainStack />
+          {/* <BarberBooking /> */}
         </StoreContext.Provider>
       </NavigationContainer>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+  },
+});
