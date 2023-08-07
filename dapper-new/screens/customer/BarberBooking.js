@@ -10,7 +10,10 @@ import {
   View,
 } from "react-native";
 import { Calendar } from "react-native-calendars";
-import { SelectList } from "react-native-dropdown-select-list";
+import {
+  MultipleSelectList,
+  SelectList,
+} from "react-native-dropdown-select-list";
 
 function BarberBooking(props) {
   const [index, setIndex] = React.useState(0);
@@ -81,7 +84,7 @@ function BarberBooking(props) {
               <Text style={[styles.label]}>Pick the Quantity </Text>
               <Image source={require("../../assets/exclamation-mark.png")} />
             </View>
-            <SelectList
+            <MultipleSelectList
               setSelected={(val) => setSelected(val)}
               data={data}
               save="value"

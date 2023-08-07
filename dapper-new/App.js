@@ -1,11 +1,11 @@
-import React from 'react';
-import AppLoading from 'expo-app-loading';
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import MainStack from './navigators/stack/MainStack';
+import React from "react";
+import AppLoading from "expo-app-loading";
+import { StatusBar } from "expo-status-bar";
+import { StyleSheet, Text, View } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import MainStack from "./navigators/stack/MainStack";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import axios from './utils';
+import axios from "./utils";
 
 import {
   useFonts,
@@ -27,10 +27,10 @@ import {
   Poppins_800ExtraBold_Italic,
   Poppins_900Black,
   Poppins_900Black_Italic,
-} from '@expo-google-fonts/poppins';
-import BarberBooking from './screens/customer/BarberBooking';
+} from "@expo-google-fonts/poppins";
+import BarberBooking from "./screens/customer/BarberBooking";
 
-export const StoreContext = React.createContext(null)
+export const StoreContext = React.createContext(null);
 
 export default function App() {
   let [fontsLoaded] = useFonts({
@@ -54,8 +54,8 @@ export default function App() {
     Poppins_900Black_Italic,
   });
 
-  const [isTouch, setTouch] = React.useState(false)
-  const [isLoading, setLoading] = React.useState(true)
+  const [isTouch, setTouch] = React.useState(false);
+  const [isLoading, setLoading] = React.useState(true);
 
   const [state, setState] = React.useState({
     user: null,
@@ -68,24 +68,23 @@ export default function App() {
     searchAddress: null,
     searchLat: null,
     searchLong: null,
-  })
+  });
 
   React.useEffect(() => {
-    AsyncStorage.removeItem("isTouch")
-    if(state.token) {
-      AsyncStorage.setItem("user", JSON.stringify(state.user))
-      AsyncStorage.setItem("token", state.token)
-      axios.defaults.headers.common['Authorization'] = `Bearer ${state.token}`;
+    AsyncStorage.removeItem("isTouch");
+    if (state.token) {
+      AsyncStorage.setItem("user", JSON.stringify(state.user));
+      AsyncStorage.setItem("token", state.token);
+      axios.defaults.headers.common["Authorization"] = `Bearer ${state.token}`;
     }
-  }, [state.token])
-  
+  }, [state.token]);
+
   if (!fontsLoaded) {
-    return <AppLoading />
-  }
-  else {
+    return <AppLoading />;
+  } else {
     return (
       <NavigationContainer>
-        <StoreContext.Provider value={{state, setState}}> 
+        <StoreContext.Provider value={{ state, setState }}>
           <MainStack />
           {/* <BarberBooking /> */}
         </StoreContext.Provider>
