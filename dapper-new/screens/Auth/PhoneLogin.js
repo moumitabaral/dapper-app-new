@@ -116,7 +116,7 @@ const PhoneLogin = ({ navigation }) => {
           <AntDesign
             name="right"
             size={20}
-            color="##6c6c6c"
+            color="#6c6c6c"
             onPress={() => navigation.goBack()}
           />
         </TouchableOpacity>
