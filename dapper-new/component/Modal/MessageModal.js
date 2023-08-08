@@ -53,6 +53,7 @@ export default function MessageModal({
       messageThemeColor = appColors.info;
       break;
   }
+  console.log("I am modal component", messageType, headerText, messageText);
   return (
     <Modal
       animationType="slide"

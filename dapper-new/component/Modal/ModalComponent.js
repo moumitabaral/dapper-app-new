@@ -12,12 +12,7 @@ function ModalComponent(props) {
     onDismiss: () => {},
     onProceed: () => {},
   });
-  const [extraMessageModalProps, setExtraMessageModalProps] = useState({
-    buttonText: "",
-    altButtonText: "",
-    onDismiss: () => {},
-    onReject: () => {},
-  });
+  const [extraMessageModalProps, setExtraMessageModalProps] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [isProceeding, setIsProceeding] = useState(false);
   const [isRejecting, setIsRejecting] = useState(false);
@@ -30,24 +25,49 @@ function ModalComponent(props) {
     headerText,
     messageText,
     onProceed,
-    extraMessageModalProps
+    extraProps
   ) => {
     setMessageModalVisible(true);
-    setRequiredMessageModalProps(
+    setRequiredMessageModalProps({
       messageType,
       headerText,
       messageText,
       onProceed,
-      (onDismiss = hideModal)
-    );
+      onDismiss: hideModal,
+    });
+    console.log("I am modal", messageType, headerText, messageText);
+    setExtraMessageModalProps(extraProps);
+  };
+
+  const messageModalState = {
+    messageModalVisible,
+    ...requiredMessageModalProps,
+    ...extraMessageModalProps,
+    isLoading,
+    isProceeding,
+    isRejecting,
+  };
+
+  const handleProceed = () => {
+    console.log("Proceeding");
+    hideModal();
   };
   return (
     <View style={styles.modalWrapper}>
       <StyledText>I am here</StyledText>
-      <StyledButton onPress={() => {}}>
+      <StyledButton
+        onPress={() => {
+          showMessageModal(
+            MessageTypes.FAIL,
+            "LOGIN FAILED",
+            "No Account with your email address. Please Sign uo first.",
+            handleProceed
+          );
+        }}
+      >
         <StyledText>Fail</StyledText>
       </StyledButton>
-      <MessageModal />
+      <MessageModal {...messageModalState} />
     </View>
   );
 }
