@@ -5,6 +5,7 @@ import PhoneLogin from "../../screens/Auth/PhoneLogin";
 import OTPVerification from "../../screens/Auth/OTPVerification";
 import SignupChoice from "../../screens/Auth/SignUpChoice";
 import SignUp from "../../screens/Auth/SignUp";
+import ModalComponent from "../../component/Modal/ModalComponent";
 
 const Stack = createStackNavigator();
 
@@ -15,6 +16,7 @@ function MainStack() {
         headerShown: false,
       }}
     >
+      <Stack.Screen name="Modal" component={ModalComponent} />
       <Stack.Screen name="SplashScreen" component={SplashScreen} />
       <Stack.Screen name="EmailLogin" component={EmailLogin} />
       <Stack.Screen name="PhoneLogin" component={PhoneLogin} />

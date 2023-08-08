@@ -29,6 +29,7 @@ import {
   Poppins_900Black_Italic,
 } from "@expo-google-fonts/poppins";
 import BarberBooking from "./screens/customer/BarberBooking";
+import { StyledButton, StyledText } from "./component/Index";
 
 export const StoreContext = React.createContext(null);
 
