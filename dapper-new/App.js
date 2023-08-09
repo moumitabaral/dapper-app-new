@@ -30,6 +30,7 @@ import {
 } from "@expo-google-fonts/poppins";
 import BarberBooking from "./screens/customer/BarberBooking";
 import { StyledButton, StyledText } from "./component/Index";
+import BarbarTab from "./navigators/tab/BarberTab";
 
 export const StoreContext = React.createContext(null);
 
@@ -86,8 +87,9 @@ export default function App() {
     return (
       <NavigationContainer>
         <StoreContext.Provider value={{ state, setState }}>
-          <MainStack />
+          {/* <MainStack /> */}
           {/* <BarberBooking /> */}
+          <BarbarTab />
         </StoreContext.Provider>
       </NavigationContainer>
     );
