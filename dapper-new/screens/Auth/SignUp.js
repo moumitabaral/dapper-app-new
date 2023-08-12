@@ -14,11 +14,13 @@ import { Dropdown } from "react-native-element-dropdown";
 import { AntDesign } from "@expo/vector-icons";
 import axios from "../../utils/index";
 import * as ImagePicker from "expo-image-picker";
+import * as DocumentPicker from "expo-document-picker";
 // import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 
 export default function Signup({ route, navigation }) {
   const { role } = route.params;
   const [submitting, setSubmitting] = React.useState(false);
+  const [selectedFile, setSelectedFile] = React.useState(null);
   const [hasErr, setHasErr] = React.useState(false);
   const [err, setErr] = React.useState([]);
   const [image, setImage] = React.useState(null);
@@ -26,8 +28,8 @@ export default function Signup({ route, navigation }) {
   const [data, setData] = React.useState({
     role: role,
     image: null,
-    name: "",
-    nickname: "",
+    firstName: "",
+    lastName: "",
     email: "",
     phone: "",
     gender: "",
@@ -49,6 +51,27 @@ export default function Signup({ route, navigation }) {
 
     if (!result.canceled) {
       setData({ ...data, image: result.assets[0] });
+    }
+  };
+
+  const pickDocument = async () => {
+    try {
+      let result = await DocumentPicker.getDocumentAsync({
+        type: DocumentPicker.types.pdf,
+      });
+      alert(result.uri);
+      console.log(result);
+
+      if (result.type === "success") {
+        setSelectedFile(result);
+      }
+    } catch (err) {
+      console.log(err);
+      // if (err.type === DocumentPicker.types.cancelled) {
+      //   console.log(err);
+      // } else {
+      //   throw err;
+      // }
     }
   };
 
@@ -164,24 +187,24 @@ export default function Signup({ route, navigation }) {
           )}
 
           <Input
-            placeholder="Full Name"
+            placeholder="First Name"
             containerStyle={{ ...styles.containerStyle, paddingTop: 30 }}
             inputContainerStyle={styles.inputContainerStyle}
             inputStyle={styles.inputStyle}
             errorStyle={styles.errorStyle}
             onChangeText={(text) =>
-              setData((data) => ({ ...data, name: text }))
+              setData((data) => ({ ...data, firstName: text }))
             }
           />
 
           <Input
-            placeholder="Nick name"
+            placeholder="Last Name"
             containerStyle={styles.containerStyle}
             inputContainerStyle={styles.inputContainerStyle}
             inputStyle={styles.inputStyle}
             errorStyle={styles.errorStyle}
             onChangeText={(text) =>
-              setData((data) => ({ ...data, nickname: text }))
+              setData((data) => ({ ...data, lastName: text }))
             }
           />
           <Input
@@ -195,7 +218,7 @@ export default function Signup({ route, navigation }) {
             }
           />
 
-          <TextInput
+          {/* <TextInput
             style={styles.input}
             cursorColor="black"
             value={data.address}
@@ -204,10 +227,10 @@ export default function Signup({ route, navigation }) {
             //   navigation.navigate("SearchScreen", { data, setData })
             // }
             autoCorrect={false}
-          />
+          /> */}
 
           <Input
-            placeholder="Phone number"
+            placeholder="+61 41 234 567"
             containerStyle={styles.containerStyle}
             inputContainerStyle={styles.inputContainerStyle}
             inputStyle={styles.inputStyle}
@@ -217,7 +240,84 @@ export default function Signup({ route, navigation }) {
             }
           />
 
-          <View style={styles.dropdownContainer}>
+          <Input
+            placeholder="Business Name"
+            containerStyle={styles.containerStyle}
+            inputContainerStyle={styles.inputContainerStyle}
+            inputStyle={styles.inputStyle}
+            errorStyle={styles.errorStyle}
+            onChangeText={(text) =>
+              setData((data) => ({ ...data, businessName: text }))
+            }
+          />
+          <Input
+            placeholder="ABN"
+            containerStyle={styles.containerStyle}
+            inputContainerStyle={styles.inputContainerStyle}
+            inputStyle={styles.inputStyle}
+            errorStyle={styles.errorStyle}
+            onChangeText={(text) => setData((data) => ({ ...data, abn: text }))}
+          />
+
+          <Input
+            placeholder="ACN(optional)"
+            containerStyle={styles.containerStyle}
+            inputContainerStyle={styles.inputContainerStyle}
+            inputStyle={styles.inputStyle}
+            errorStyle={styles.errorStyle}
+            onChangeText={(text) => setData((data) => ({ ...data, acn: text }))}
+          />
+
+          <Input
+            placeholder="Account name"
+            containerStyle={styles.containerStyle}
+            inputContainerStyle={styles.inputContainerStyle}
+            inputStyle={styles.inputStyle}
+            errorStyle={styles.errorStyle}
+            onChangeText={(text) =>
+              setData((data) => ({ ...data, accountName: text }))
+            }
+          />
+
+          <Input
+            placeholder="BSB"
+            containerStyle={styles.containerStyle}
+            inputContainerStyle={styles.inputContainerStyle}
+            inputStyle={styles.inputStyle}
+            errorStyle={styles.errorStyle}
+            onChangeText={(text) => setData((data) => ({ ...data, bsb: text }))}
+          />
+
+          <Input
+            placeholder="Account number"
+            containerStyle={styles.containerStyle}
+            inputContainerStyle={styles.inputContainerStyle}
+            inputStyle={styles.inputStyle}
+            errorStyle={styles.errorStyle}
+            onChangeText={(text) =>
+              setData((data) => ({ ...data, accountNumber: text }))
+            }
+          />
+          <TouchableOpacity onPress={pickDocument}>
+            <View style={styles.uploadDocumentContainer}>
+              <Text style={styles.uploadText}>
+                ABN, Insurance, Certificate, police check, working with
+                children, drivers license and driving record
+              </Text>
+              <Image
+                source={require("../../assets/uil_upload.png")}
+                style={{ marginTop: 20 }}
+              />
+              <Text style={[styles.uploadText, styles.uploadTextColor]}>
+                Click to upload here
+              </Text>
+            </View>
+            <Text style={styles.fileText}>
+              Accepted files are png, jpg pdf. Max 20mb upload
+            </Text>
+          </TouchableOpacity>
+
+          {/* <View style={styles.dropdownContainer}>
             <Dropdown
               data={sex}
               value={data.gender}
@@ -235,7 +335,7 @@ export default function Signup({ route, navigation }) {
                 setData((data) => ({ ...data, gender: item.value }))
               }
             />
-          </View>
+          </View> */}
 
           <Button
             buttonStyle={styles.buttonStyle}
@@ -404,6 +504,39 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#575757",
     fontFamily: "Poppins_400Regular",
+  },
+  uploadDocumentContainer: {
+    // width: "100%",
+    borderColor: "#D8D8D8",
+    borderWidth: 1,
+    borderStyle: "dashed",
+    borderRadius: 8,
+    // minHeight: 100,
+    marginHorizontal: 14,
+    padding: 15,
+    marginBottom: 20,
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  uploadText: {
+    color: "#ABABAB",
+    fontSize: 14,
+    fontFamily: "Poppins_400Regular",
+    textAlign: "center",
+    lineHeight: 22,
+    // marginBottom: 26,
+  },
+  uploadTextColor: {
+    color: "#263238",
+    marginTop: 8,
+  },
+  fileText: {
+    color: "#979797",
+    fontSize: 13,
+    fontFamily: "Poppins_400Regular",
+    marginHorizontal: 14,
+    marginBottom: 36,
   },
 });
 
