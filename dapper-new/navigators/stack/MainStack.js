@@ -16,7 +16,7 @@ function MainStack() {
         headerShown: false,
       }}
     >
-      {/* <Stack.Screen name="Modal" component={ModalComponent} /> */}
+      <Stack.Screen name="Modal" component={ModalComponent} />
       <Stack.Screen name="SplashScreen" component={SplashScreen} />
       <Stack.Screen name="EmailLogin" component={EmailLogin} />
       <Stack.Screen name="PhoneLogin" component={PhoneLogin} />

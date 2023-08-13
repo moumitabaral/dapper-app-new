@@ -87,9 +87,9 @@ export default function App() {
     return (
       <NavigationContainer>
         <StoreContext.Provider value={{ state, setState }}>
-          <MainStack />
+          {/* <MainStack /> */}
           {/* <BarberBooking /> */}
-          {/* <BarbarTab /> */}
+          <BarbarTab />
         </StoreContext.Provider>
       </NavigationContainer>
     );

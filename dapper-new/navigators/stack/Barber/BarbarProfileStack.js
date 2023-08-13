@@ -1,5 +1,6 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import BarberProfileScreen from "../../../screens/Barber/BarberProfileScreen";
+import DeleteAccountStack from "./DeleteAccountStack";
 
 const Stack = createStackNavigator();
 
@@ -10,6 +11,7 @@ function BarberProfileStack() {
         headerShown: false,
       }}
     >
+      <Stack.Screen name="DeleteAccount" component={DeleteAccountStack} />
       <Stack.Screen name="BarberProfile" component={BarberProfileScreen} />
     </Stack.Navigator>
   );

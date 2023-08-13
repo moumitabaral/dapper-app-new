@@ -23,6 +23,9 @@ const BarbarTab = () => {
           fontSize: 10,
           fontFamily: "Poppins_500Medium",
         },
+        tabBarStyle: {
+          paddingVertical: 10,
+        },
         headerShown: false,
         tabBarHideOnKeyboard: true,
         tabBarStyle: {},
