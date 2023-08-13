@@ -1,4 +1,5 @@
 import { Entypo, FontAwesome5 } from "@expo/vector-icons";
+import { Input } from "@rneui/base";
 import React, { useState } from "react";
 import {
   TextInput,
@@ -13,22 +14,21 @@ function BarberDeleteOtpEmail({ navigation }) {
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState(" ");
 
-  const validate = (email) => {
-    if (!email.includes("@")) {
-      setEmailError("Invalid Email address.");
-    } else if (!email.includes("gmail")) {
-      setEmailError("This email doesn't contain 'gmail' in it.");
-    } else if (email.length === 0) {
-      setEmailError("Email is required");
-    } else if (email.indexOf(" ") >= 0) {
-      setEmailError("Email can not contan spaces");
-    } else {
-      setEmailError("");
-    }
+  const validateEmail = (email) => {
+    // Regular expression for email validation
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    return emailRegex.test(email);
   };
   const handleInputChange = (email) => {
     setEmail(email);
-    validate(email);
+    // validate(email);
+    setEmailError(validateEmail(email));
+  };
+
+  const handleSubmit = () => {
+    // validate(email);
+    console.log("email", email);
+    navigation.navigate("DeleteProfileOtp");
   };
 
   return (
@@ -44,15 +44,23 @@ function BarberDeleteOtpEmail({ navigation }) {
       <View style={styles.firstHlaf}>
         <View>
           <Text style={styles.deleteText}>OTP code sent to email</Text>
-          <TextInput
-            style={styles.input}
+          <Input
+            // style={styles.input}
+            inputContainerStyle={styles.input}
+            inputStyle={styles.inputStyle}
             placeholder="email address"
             onChangeText={handleInputChange}
+            errorMessage={
+              <Text style={styles.errorMessage}>
+                {emailError ? "" : "Please enter a valid email"}
+              </Text>
+            }
           />
         </View>
         <Pressable
           style={styles.continueButtonWrapper}
-          onPress={() => navigation.navigate("DeleteProfileOtp")}
+          onPress={handleSubmit}
+          // onPress={() => navigation.navigate("DeleteProfileOtp")}
         >
           <Text style={[styles.buttonLabel, styles.yesButtonColor]}>
             Continue
@@ -77,6 +85,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 0,
+    marginLeft: 10,
   },
 
   firstHlaf: {
@@ -101,6 +110,7 @@ const styles = StyleSheet.create({
     color: "#263238",
     fontFamily: "Poppins_500Medium",
     marginVertical: 30,
+    marginLeft: 10,
   },
 
   yesButtonContainer: {
@@ -122,10 +132,20 @@ const styles = StyleSheet.create({
     borderColor: "#D8D8D8",
     borderRadius: 8,
     height: 46,
+    width: "100%",
+  },
+  inputStyle: {
     fontSize: 14,
     color: "#263238",
     fontFamily: "Poppins_400Regular",
     paddingHorizontal: 14,
+  },
+  errorMessage: {
+    color: "#84202A",
+    fontFamily: "Poppins_400Regular",
+    fontSize: 14,
+    marginHorizontal: 10,
+    marginBottom: 16,
   },
   continueButtonWrapper: {
     borderColor: "#FE5353",
@@ -134,6 +154,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     height: 46,
     justifyContent: "center",
+    marginHorizontal: 10,
   },
   buttonLabel: {
     fontSize: 14,

@@ -10,18 +10,16 @@ import {
   View,
   Switch,
 } from "react-native";
-import { Calendar } from "react-native-calendars";
-import {
-  MultipleSelectList,
-  SelectList,
-} from "react-native-dropdown-select-list";
 
 function BarberDeleteYesNo({ navigation }) {
-  const [selectedDate, setSelectedDate] = useState("");
-  const [isEnabled, setIsEnabled] = useState(false);
-
-  const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
-
+  const handleSubmit = (e, { name }) => {
+    console.log("target", name);
+    if (name === "yes") {
+      navigation.navigate("DeleteProfileOtpEmail");
+    } else {
+      navigation.goBack();
+    }
+  };
   return (
     <SafeAreaView style={styles.droidSafeArea}>
       <View style={styles.topBar}>
@@ -39,14 +37,19 @@ function BarberDeleteYesNo({ navigation }) {
               Are you sure you want to delete?
             </Text>
             <View style={styles.buttonContainerWrapper}>
-              <Pressable style={styles.noButtonContainer}>
+              <Pressable
+                style={styles.noButtonContainer}
+                // onPress={() => navigation.goBack()}
+                onPress={(e) => handleSubmit(e, { name: "no" })}
+              >
                 <Text style={[styles.buttonLabel, styles.noButtonColor]}>
                   No
                 </Text>
               </Pressable>
               <Pressable
                 style={styles.yesButtonContainer}
-                onPress={() => navigation.navigate("DeleteProfileOtpEmail")}
+                // onPress={() => navigation.navigate("DeleteProfileOtpEmail")}
+                onPress={(e) => handleSubmit(e, { name: "yes" })}
               >
                 <Text style={[styles.buttonLabel, styles.yesButtonColor]}>
                   Yes
