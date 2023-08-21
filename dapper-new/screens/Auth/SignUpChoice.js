@@ -22,7 +22,7 @@ export default function SignupChoice({ navigation }) {
         </Pressable>
         <Pressable
           style={styles.customerContainer}
-          onPress={() => navigation.push("Signup", { role: "BARBAR" })}
+          onPress={() => navigation.push("Signup", { role: "CUSTOMER" })}
         >
           <Image source={require("../../assets/Customer.png")} />
           <Text style={[styles.signupchoiceText, styles.customerTextcolor]}>

@@ -8,6 +8,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import axios from "../../utils/index";
 import { useState } from "react";
 import { Image } from "react-native";
+import { StoreContext } from "../../App";
 import { Pressable } from "react-native";
 
 const EmailLogin = ({ navigation }) => {

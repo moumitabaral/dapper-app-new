@@ -28,11 +28,17 @@ export default function Signup({ route, navigation }) {
   const [data, setData] = React.useState({
     role: role,
     image: null,
+    document: null,
     firstName: "",
     lastName: "",
     email: "",
     phone: "",
-    gender: "",
+    businessName: "",
+    abn: "",
+    acn: "",
+    accountName: "",
+    bsb: "",
+    accountNumber: ""
   });
 
   const sex = [
@@ -57,9 +63,9 @@ export default function Signup({ route, navigation }) {
   const pickDocument = async () => {
     try {
       let result = await DocumentPicker.getDocumentAsync({
-        type: DocumentPicker.types.pdf,
+        type: "application/pdf",
       });
-      alert(result.uri);
+      alert(result.assets[0].uri);
       console.log(result);
 
       if (result.type === "success") {
@@ -75,59 +81,69 @@ export default function Signup({ route, navigation }) {
     }
   };
 
-  const send = async () => {
-    const formData = new FormData();
+  // const send = async () => {
+  //   const formData = new FormData();
 
-    formData.append("role", data.role);
-    formData.append("name", data.name);
-    formData.append("nickname", data.nickname);
-    formData.append("email", data.email);
-    formData.append("phone", data.phone);
-    formData.append("gender", data.gender);
-    formData.append("address", data.address);
-    formData.append("longitude", data.longitude);
-    formData.append("latitude", data.latitude);
+  //   formData.append("role", data.role);
+  //   formData.append("name", data.name);
+  //   formData.append("nickname", data.nickname);
+  //   formData.append("email", data.email);
+  //   formData.append("phone", data.phone);
+  //   formData.append("gender", data.gender);
+  //   formData.append("address", data.address);
+  //   formData.append("longitude", data.longitude);
+  //   formData.append("latitude", data.latitude);
 
-    if (data.image) {
-      const uri =
-        Platform.OS === "android"
-          ? data.image.uri
-          : data.image.uri.replace("file://", "");
-      const filename = data.image.uri.split("/").pop();
-      const match = /\.(\w+)$/.exec(filename);
-      const ext = match?.[1];
-      const type = match ? `image/${match[1]}` : `image`;
-      formData.append("image", {
-        uri: uri,
-        type: type,
-        name: `image.${ext}`,
-      });
-    } else {
-      formData.append("image", "");
-    }
+  //   if (data.image) {
+  //     const uri =
+  //       Platform.OS === "android"
+  //         ? data.image.uri
+  //         : data.image.uri.replace("file://", "");
+  //     const filename = data.image.uri.split("/").pop();
+  //     const match = /\.(\w+)$/.exec(filename);
+  //     const ext = match?.[1];
+  //     const type = match ? `image/${match[1]}` : `image`;
+  //     formData.append("image", {
+  //       uri: uri,
+  //       type: type,
+  //       name: `image.${ext}`,
+  //     });
+  //   } else {
+  //     formData.append("image", "");
+  //   }
 
-    setSubmitting(true);
-    setHasErr(false);
-    setErr([]);
-    try {
-      const response = await axios.post("/user/register", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-      setSubmitting(false);
-      // navigation.navigate("OTPVerification", { email: data.email });
-    } catch (err) {
-      setSubmitting(false);
-      if (err.response.status == 400) {
-        setHasErr(true);
-        setErr(err.response.data.errors);
-      } else {
-        setHasErr(true);
-        setErr(["Server error, try again later."]);
-      }
-    }
-  };
+  //   setSubmitting(true);
+  //   setHasErr(false);
+  //   setErr([]);
+  //   try {
+  //     const response = await axios.post("/user/register", formData, {
+  //       headers: {
+  //         "Content-Type": "multipart/form-data",
+  //       },
+  //     });
+  //     setSubmitting(false);
+  //     // navigation.navigate("OTPVerification", { email: data.email });
+  //   } catch (err) {
+  //     setSubmitting(false);
+  //     if (err.response.status == 400) {
+  //       setHasErr(true);
+  //       setErr(err.response.data.errors);
+  //     } else {
+  //       setHasErr(true);
+  //       setErr(["Server error, try again later."]);
+  //     }
+  //   }
+  // };
+
+  const send = async() => {
+    setSubmitting(true)
+
+    setTimeout(() => {
+      alert("New Account Is Register")
+      setSubmitting(false)
+      navigation.navigate("EmailLogin")
+    }, 2000)
+  }
 
   return (
     <SafeAreaView style={{ flex: 1 }} forceInset={{ top: "alaways" }}>
@@ -274,9 +290,7 @@ export default function Signup({ route, navigation }) {
             inputContainerStyle={styles.inputContainerStyle}
             inputStyle={styles.inputStyle}
             errorStyle={styles.errorStyle}
-            onChangeText={(text) =>
-              setData((data) => ({ ...data, accountName: text }))
-            }
+            onChangeText={(text) => setData((data) => ({ ...data, accountName: text }))}
           />
 
           <Input
@@ -298,6 +312,7 @@ export default function Signup({ route, navigation }) {
               setData((data) => ({ ...data, accountNumber: text }))
             }
           />
+
           <TouchableOpacity onPress={pickDocument}>
             <View style={styles.uploadDocumentContainer}>
               <Text style={styles.uploadText}>
@@ -313,7 +328,7 @@ export default function Signup({ route, navigation }) {
               </Text>
             </View>
             <Text style={styles.fileText}>
-              Accepted files are png, jpg pdf. Max 20mb upload
+              Accepted files are pdf. Max 2mb upload
             </Text>
           </TouchableOpacity>
 
@@ -350,7 +365,7 @@ export default function Signup({ route, navigation }) {
             <Text style={styles.hasAccountText}>Already have an account? </Text>
             <Text
               style={styles.signinText}
-              // onPress={() => navigation.navigate("EmailLogin")}
+              onPress={() => navigation.navigate("EmailLogin")}
             >
               Sign in
             </Text>

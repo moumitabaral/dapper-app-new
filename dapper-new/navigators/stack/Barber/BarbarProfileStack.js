@@ -11,8 +11,8 @@ function BarberProfileStack() {
         headerShown: false,
       }}
     >
-      <Stack.Screen name="DeleteAccount" component={DeleteAccountStack} />
       <Stack.Screen name="BarberProfile" component={BarberProfileScreen} />
+      <Stack.Screen name="DeleteAccount" component={DeleteAccountStack} />
     </Stack.Navigator>
   );
 }
