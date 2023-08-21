@@ -12,53 +12,64 @@ import { Pressable } from "react-native";
 
 const EmailLogin = ({ navigation }) => {
   const [email, setEmail] = useState("");
-  const [emailError, setEmailError] = useState(" ");
+  // const [emailError, setEmailError] = useState(" ");
+  const [emailValidation, setEmailValidation] = useState(" ");
   const [isSubmitting, setSubmitting] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [error, setError] = useState([]);
 
-  const validate = (email) => {
-    if (!email.includes("@")) {
-      setEmailError("Invalid Email address.");
-    } else if (!email.includes("gmail")) {
-      setEmailError("This email doesn't contain 'gmail' in it.");
-    } else if (email.length === 0) {
-      setEmailError("Email is required");
-    } else if (email.indexOf(" ") >= 0) {
-      setEmailError("Email can not contan spaces");
-    } else {
-      setEmailError("");
-    }
+  // const validate = (email) => {
+  //   if (!email.includes("@")) {
+  //     setEmailError("Invalid Email address.");
+  //   } else if (!email.includes("gmail")) {
+  //     setEmailError("This email doesn't contain 'gmail' in it.");
+  //   } else if (email.length === 0) {
+  //     setEmailError("Email is required");
+  //   } else if (email.indexOf(" ") >= 0) {
+  //     setEmailError("Email can not contan spaces");
+  //   } else {
+  //     setEmailError("");
+  //   }
+  // };
+  const validateEmail = (email) => {
+    // Regular expression for email validation
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    return emailRegex.test(email);
   };
   const handleInputChange = (email) => {
     setEmail(email);
-    validate(email);
+    setEmailValidation(validateEmail(email));
+    // validate(email);
   };
   const send = async () => {
     setSubmitting(true);
     setHasError(false);
     setError([]);
-
-    try {
-      const response = await axios.post(`/user/login`, {
-        email,
-        channel: "email",
-      });
-      setSubmitting(false);
-      if (response.status === 200) {
-        navigation.navigate("OTPVerification", { email, channel: "email" });
+    if (emailValidation === true) {
+      try {
+        const response = await axios.post(`/user/login`, {
+          email,
+          channel: "email",
+        });
+        setSubmitting(false);
+        if (response.status === 200) {
+          navigation.navigate("OTPVerification", { email, channel: "email" });
+        }
+      } catch (err) {
+        setSubmitting(false);
+        setHasError(true);
+        console.log(err);
+        if (err?.response?.status === 400) {
+          setError(err?.response?.data?.errors);
+        } else if (err?.response?.status === 401) {
+          setError([err?.response?.data?.error]);
+        } else {
+          setError(["Oops, something went wrong"]);
+        }
       }
-    } catch (err) {
+    } else {
       setSubmitting(false);
-      setHasError(true);
-      console.log(err);
-      if (err?.response?.status === 400) {
-        setError(err?.response?.data?.errors);
-      } else if (err?.response?.status === 401) {
-        setError([err?.response?.data?.error]);
-      } else {
-        setError(["Oops, something went wrong"]);
-      }
+      setEmailValidation(validateEmail(email));
     }
   };
 
@@ -101,7 +112,11 @@ const EmailLogin = ({ navigation }) => {
           }
           leftIconContainerStyle={styles.leftIconContainerStyle}
           onChangeText={handleInputChange}
-          errorMessage={<Text style={styles.errorMessage}>{emailError}</Text>}
+          errorMessage={
+            <Text style={styles.errorMessage}>
+              {emailValidation ? "" : "Please enter a valid email"}
+            </Text>
+          }
         />
 
         <Button

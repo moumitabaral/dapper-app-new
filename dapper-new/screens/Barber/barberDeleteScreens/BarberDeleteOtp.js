@@ -8,12 +8,31 @@ import {
   Text,
   View,
 } from "react-native";
+import { Input } from "react-native-elements";
 
 function BarberDeleteOtp({ navigation }) {
-  const [selectedDate, setSelectedDate] = useState("");
-  const [isEnabled, setIsEnabled] = useState(false);
+  const [otp, setOTP] = useState("");
+  const [isValidOTP, setIsValidOTP] = useState(false);
 
-  const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
+  const validateOTP = (otp) => {
+    // Regular expression for a 4-digit OTP
+    const otpRegex = /^[0-9]{4}$/;
+    return otpRegex.test(otp);
+  };
+
+  const handleOTPChange = (newOTP) => {
+    setOTP(newOTP);
+    setIsValidOTP(validateOTP(newOTP));
+  };
+
+  const handleSubmit = () => {
+    if (isValidOTP) {
+      console.log(otp);
+      navigation.navigate("DeleteProfileConfirm");
+    } else {
+      setIsValidOTP(validateOTP(newOTP));
+    }
+  };
 
   return (
     <SafeAreaView style={styles.droidSafeArea}>
@@ -31,11 +50,23 @@ function BarberDeleteOtp({ navigation }) {
           <Text style={styles.deleteParaText}>
             Are you sure this cannot be undone
           </Text>
-          <TextInput style={styles.input} />
+          <Input
+            inputContainerStyle={styles.input}
+            inputStyle={styles.inputStyle}
+            placeholder="Enter OTP"
+            value={otp}
+            onChangeText={handleOTPChange}
+            errorMessage={
+              <Text style={styles.errorMessage}>
+                {isValidOTP ? "" : "Please enter a valid 4-digit OTP"}
+              </Text>
+            }
+          />
         </View>
         <Pressable
           style={styles.continueButtonWrapper}
-          onPress={() => navigation.navigate("DeleteProfileConfirm")}
+          onPress={handleSubmit} //
+          disabled={!isValidOTP}
         >
           <Text style={[styles.buttonLabel, styles.yesButtonColor]}>
             Continue
@@ -60,6 +91,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 0,
+    marginLeft: 10,
   },
 
   firstHlaf: {
@@ -84,12 +116,14 @@ const styles = StyleSheet.create({
     color: "#263238",
     fontFamily: "Poppins_500Medium",
     marginTop: 30,
+    marginHorizontal: 10,
   },
   deleteParaText: {
     fontSize: 14,
     color: "#263238",
     fontFamily: "Poppins_400Regular",
     marginBottom: 14,
+    marginHorizontal: 10,
   },
   yesButtonContainer: {
     width: 113,
@@ -110,10 +144,19 @@ const styles = StyleSheet.create({
     borderColor: "#D8D8D8",
     borderRadius: 8,
     height: 46,
+  },
+  inputStyle: {
     fontSize: 14,
     color: "#263238",
     fontFamily: "Poppins_400Regular",
     paddingHorizontal: 14,
+  },
+  errorMessage: {
+    color: "#84202A",
+    fontFamily: "Poppins_400Regular",
+    fontSize: 14,
+    marginHorizontal: 10,
+    marginBottom: 16,
   },
   continueButtonWrapper: {
     borderColor: "#FE5353",
@@ -121,6 +164,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 8,
     paddingVertical: 11,
+    marginHorizontal: 10,
   },
   buttonLabel: {
     fontSize: 14,

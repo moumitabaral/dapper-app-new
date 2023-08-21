@@ -1,5 +1,6 @@
 import { Entypo, FontAwesome5 } from "@expo/vector-icons";
 import { Input } from "@rneui/base";
+import axios from "axios";
 import React, { useState } from "react";
 import {
   TextInput,
@@ -12,7 +13,8 @@ import {
 
 function BarberDeleteOtpEmail({ navigation }) {
   const [email, setEmail] = useState("");
-  const [emailError, setEmailError] = useState(" ");
+  const [emailValidation, setEmailValidation] = useState(" ");
+  const [error, setError] = useState([]);
 
   const validateEmail = (email) => {
     // Regular expression for email validation
@@ -22,13 +24,35 @@ function BarberDeleteOtpEmail({ navigation }) {
   const handleInputChange = (email) => {
     setEmail(email);
     // validate(email);
-    setEmailError(validateEmail(email));
+    setEmailValidation(validateEmail(email));
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     // validate(email);
-    console.log("email", email);
-    navigation.navigate("DeleteProfileOtp");
+    if (emailValidation === true) {
+      console.log("email", email);
+      try {
+        const response = await axios.post(`user/delete-account`, {
+          email,
+        });
+        setSubmitting(false);
+        if (response.status === 200) {
+          console.log(response);
+          navigation.navigate("DeleteProfileOtp", { email });
+        }
+      } catch (err) {
+        console.log("err", err);
+        if (err?.response?.status === 400) {
+          setError(err?.response?.data?.errors);
+        } else if (err?.response?.status === 401) {
+          setError([err?.response?.data?.error]);
+        } else {
+          setError(["Oops, something went wrong"]);
+        }
+      }
+    } else {
+      setEmailValidation(validateEmail(email));
+    }
   };
 
   return (
@@ -50,9 +74,10 @@ function BarberDeleteOtpEmail({ navigation }) {
             inputStyle={styles.inputStyle}
             placeholder="email address"
             onChangeText={handleInputChange}
+            value={email}
             errorMessage={
               <Text style={styles.errorMessage}>
-                {emailError ? "" : "Please enter a valid email"}
+                {emailValidation ? "" : "Please enter a valid email"}
               </Text>
             }
           />
