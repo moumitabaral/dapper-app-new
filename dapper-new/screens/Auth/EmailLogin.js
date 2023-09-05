@@ -10,6 +10,7 @@ import { useState } from "react";
 import { Image } from "react-native";
 import { StoreContext } from "../../App";
 import { Pressable } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const EmailLogin = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -62,6 +63,10 @@ const EmailLogin = ({ navigation }) => {
       }
     }
   };
+
+  React.useEffect(() => {
+    AsyncStorage.setItem("isTouch", "YES")
+  }, [])
 
   return (
     <SafeAreaView style={styles.container}>

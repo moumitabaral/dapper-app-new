@@ -75,7 +75,7 @@ const BarbarTab = () => {
         name="Message"
         component={BarberChatStack}
         options={{
-          tabBarLabel: "Message",
+          tabBarLabel: "Inbox",
 
           tabBarIcon: ({ color, size }) => (
             <FontAwesome5 name="envelope" size={20} color={color} />

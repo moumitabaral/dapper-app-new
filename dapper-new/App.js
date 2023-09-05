@@ -73,13 +73,14 @@ export default function App() {
   });
 
   React.useEffect(() => {
-    AsyncStorage.removeItem("isTouch");
+    // AsyncStorage.removeItem("isTouch");
     if (state.token) {
       AsyncStorage.setItem("user", JSON.stringify(state.user));
       AsyncStorage.setItem("token", state.token);
       axios.defaults.headers.common["Authorization"] = `Bearer ${state.token}`;
     }
   }, [state.token]);
+
 
   if (!fontsLoaded) {
     return <AppLoading />;
@@ -88,8 +89,6 @@ export default function App() {
       <NavigationContainer>
         <StoreContext.Provider value={{ state, setState }}>
           <MainStack />
-          {/* <BarberBooking /> */}
-          {/* <BarbarTab /> */}
         </StoreContext.Provider>
       </NavigationContainer>
     );

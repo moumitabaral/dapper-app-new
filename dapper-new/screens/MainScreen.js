@@ -1,13 +1,17 @@
 import React from 'react'
 import { StoreContext } from '../App'
 import BarbarTab from '../navigators/tab/BarberTab'
+import CustomerTab from '../navigators/tab/CustomerTab'
 
-const MainScreen = () => {
+const MainScreen = ({ navigation }) => {
     const {state, setState} = React.useContext(StoreContext)
-    
-    if(state.user.role == "BARBAR") {
-        return <BarbarTab />
-    }
+
+    return (
+        <>
+          {state.user!=null && state.user.role == "BARBAR" && <BarbarTab />}
+          {state.user!=null && state.user.role == "CUSTOMER" && <CustomerTab />}
+        </>
+      )
 }
 
 export default MainScreen

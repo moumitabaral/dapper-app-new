@@ -5,6 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { AntDesign } from '@expo/vector-icons'; 
 import axios from "../../utils/index"
 import { StoreContext } from '../../App';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const OTPVerification = ({route, navigation}) => {
     
@@ -54,7 +55,10 @@ const OTPVerification = ({route, navigation}) => {
              setSubmitting(false)
              
              const response = await axios.post('/user/verify', {data, channel, otp})
-             if(response.status === 200) {         
+             if(response.status === 200) {    
+                AsyncStorage.setItem("user", JSON.stringify(state.user));
+                AsyncStorage.setItem("token", state.token);
+                console.log("Logged In")     
                 setState(state => ({...state, user: response.data.user, token: response.data.token}))
                 navigation.navigate("MainScreen")
              }

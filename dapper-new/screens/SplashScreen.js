@@ -4,6 +4,7 @@ import { Image, StyleSheet, View } from "react-native";
 import SafeAreaView from "react-native-safe-area-view";
 import { Octicons } from "@expo/vector-icons";
 import { useFonts, Poppins_500Medium } from "@expo-google-fonts/poppins";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const SplashScreen = ({ navigation, route }) => {
   let [fontsLoaded] = useFonts({
@@ -79,66 +80,97 @@ const SplashScreen = ({ navigation, route }) => {
     }
   };
 
-  return (
-    <SafeAreaView style={{ flex: 1 }} forceInset={{ top: "alaways" }}>
-      <View style={styles.container}>
-        <View style={styles.top}>
-          <Image resizeMode="cover" source={data[screenNumber].image} />
-          <Text
-            style={{
-              color: "#263238",
-              fontFamily: "Poppins_500Medium",
-              fontSize: 28,
-              textAlign: "center",
-              marginVertical: 40,
-            }}
-          >
-            {data[screenNumber].text}
-          </Text>
-          <View style={{ flexDirection: "row", justifyContent: "center" }}>
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13].map(
-              (element, index) => (
-                <Octicons
-                  key={index}
-                  name="dash"
-                  size={24}
-                  color="black"
-                  style={[
-                    styles.dash,
-                    index == screenNumber && styles.dashActive,
-                  ]}
-                />
-              )
-            )}
+  const [isLoading, setLoading] = React.useState(false)
+  const [isAppLoad, setAppLoad] = React.useState(false)
+
+  const checkIfAppWasTouched = async () => {
+    try {
+      const value = await AsyncStorage.getItem('isTouch');
+      if (value == "YES") {
+        setAppLoad(true)
+      }
+    } catch (e) {
+
+    }
+  };
+
+  React.useEffect(() => {
+    (async () => {
+      setLoading(true)
+      await checkIfAppWasTouched()
+      setLoading(false)
+    })()
+  }, [])
+
+
+  if(isLoading) {
+    return null
+  }
+  else if(!isLoading && isAppLoad) {
+    navigation.navigate("MainScreen")
+  }
+  else {
+    return (
+      <SafeAreaView style={{ flex: 1 }} forceInset={{ top: "alaways" }}>
+        <View style={styles.container}>
+          <View style={styles.top}>
+            <Image resizeMode="cover" source={data[screenNumber].image} />
+            <Text
+              style={{
+                color: "#263238",
+                fontFamily: "Poppins_500Medium",
+                fontSize: 28,
+                textAlign: "center",
+                marginVertical: 40,
+              }}
+            >
+              {data[screenNumber].text}
+            </Text>
+            <View style={{ flexDirection: "row", justifyContent: "center" }}>
+              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13].map(
+                (element, index) => (
+                  <Octicons
+                    key={index}
+                    name="dash"
+                    size={24}
+                    color="black"
+                    style={[
+                      styles.dash,
+                      index == screenNumber && styles.dashActive,
+                    ]}
+                  />
+                )
+              )}
+            </View>
+          </View>
+          <View style={styles.bottom}>
+            <Button
+              buttonStyle={{
+                width: 100,
+                height: 43,
+                borderRadius: 9,
+                backgroundColor: "whitesmoke",
+              }}
+              titleStyle={{ color: "grey", fontFamily: "Poppins_400Regular" }}
+              title={"Skip"}
+              onPress={() => navigation.navigate("EmailLogin")}
+            />
+            <Button
+              buttonStyle={{
+                width: 100,
+                height: 43,
+                borderRadius: 9,
+                backgroundColor: "#AE8447",
+                fontFamily: "Poppins_400Regular",
+              }}
+              title={"Next"}
+              onPress={() => goToNextScreen()}
+            />
           </View>
         </View>
-        <View style={styles.bottom}>
-          <Button
-            buttonStyle={{
-              width: 100,
-              height: 43,
-              borderRadius: 9,
-              backgroundColor: "whitesmoke",
-            }}
-            titleStyle={{ color: "grey", fontFamily: "Poppins_400Regular" }}
-            title={"Skip"}
-            onPress={() => navigation.navigate("EmailLogin")}
-          />
-          <Button
-            buttonStyle={{
-              width: 100,
-              height: 43,
-              borderRadius: 9,
-              backgroundColor: "#AE8447",
-              fontFamily: "Poppins_400Regular",
-            }}
-            title={"Next"}
-            onPress={() => goToNextScreen()}
-          />
-        </View>
-      </View>
-    </SafeAreaView>
-  );
+      </SafeAreaView>
+    );
+  }
 };
 
 const styles = StyleSheet.create({
