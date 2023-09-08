@@ -12,7 +12,6 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import * as Location from 'expo-location';
 
-
 const HomeScreen = ({navigation}) => {
 
   const {state, setState} = React.useContext(StoreContext)
@@ -20,12 +19,33 @@ const HomeScreen = ({navigation}) => {
   const [shops, setShops] = React.useState([])
   const [locations, setLocations] = React.useState([])
   const [refreshing, setRefreshing] = React.useState(false)
+  const [place, setPlace] = React.useState(null)
+
+  const [region, setRegion] = React.useState({coords: {latitude: -33.865143, longitude: 151.209900}});
+  const [errorMsg, setErrorMsg] = React.useState(null);
+
+  // Fetch Device Location
+  React.useEffect(() => {
+    (async () => {
+      
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        setErrorMsg('Permission to access location was denied');
+        return;
+      }
+
+      let newOegion = await Location.getCurrentPositionAsync({});
+      setRegion(newOegion);
+    })();
+  }, []);
+
 
   const loadData =() => {
     setLoading(true)
     axios.get("/shop")
     .then(response => {
       if(response.status  == 200) {
+        console.log(response.data.shops)
         setState(state => ({...state, shops: response.data.shops}))
       }
     })
@@ -57,30 +77,6 @@ const HomeScreen = ({navigation}) => {
     setState(state => ({...state, locations: locations}))
     
   }, [state.shops])
-
-
-  const [location, setLocation] = React.useState(null);
-  const [errorMsg, setErrorMsg] = React.useState(null);
-
-  // Fetch Device Location
-  React.useEffect(() => {
-    (async () => {
-      
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        setErrorMsg('Permission to access location was denied');
-        return;
-      }
-
-      let location = await Location.getCurrentPositionAsync({});
-      setLocation(location);
-    })();
-  }, []);
-
-
-  React.useEffect(() => {
-      console.log(location)
-  }, [location])
 
   const generateBoxShadowStyle = (
     xOffset,
@@ -152,23 +148,23 @@ const HomeScreen = ({navigation}) => {
       <View style={styles.container}>
 
         <View style={styles.searchContainer}>
-          <TouchableOpacity style={styles.fakeInput}  onPress={() => navigation.navigate("SearchScreen")} activeOpacity={1}> 
-            <Text style={styles.fakeInputText}>Search location</Text>
+          <TouchableOpacity style={styles.fakeInput}  onPress={() => navigation.navigate("SearchScreen", {place, setPlace})} activeOpacity={1}> 
+          <Text style={styles.fakeInputText}>{place != null ? place.searchAddress : "Search Location"}</Text>
             <FontAwesome5 name="search-location" size={24} color="#AE8447" />
           </TouchableOpacity>
-          
-          {state.searchAddress &&  (
-            <View style={{flexDirection: "row", marginVertical: 5, marginHorizontal: 10, justifyContent: "flex-start", alignItems: "flex-start"}}>
-              <Ionicons name="location-outline" size={28} color="black" />
-            </View>
-          )}
         </View>
 
         <View style={styles.mapContainer}>
-          <Map locations={[
-            {latitude: "22.5724183", longitude: "88.3193267"},
-            {latitude: "22.5448", longitude: "88.3426"},
-          ]} />
+          <Map 
+            region={{
+              latitude: place != null ? place.searchLat : region.coords.latitude,
+              longitude: place != null?  place.searchLong : region.coords.longitude,
+            }}
+            locations={[
+              {latitude: "22.5724183", longitude: "88.3193267"},
+              {latitude: "22.5448", longitude: "88.3426"},
+            ]} 
+          />
         </View>
 
         <View style={styles.shopsContainer}>
@@ -193,11 +189,11 @@ const styles = StyleSheet.create({
       backgroundColor: '#FDFDFD',
     },
     searchContainer: {
-      flex: 0.15,
+      flex: 0.1,
       paddingHorizontal: 14
     },  
     mapContainer: {
-      flex: 0.45,
+      flex: 0.5,
     },
     shopsContainer: {
       flex: 0.4

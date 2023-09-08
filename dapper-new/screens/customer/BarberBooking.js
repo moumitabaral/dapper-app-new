@@ -84,7 +84,7 @@ function BarberBooking(props) {
               <Text style={[styles.label]}>Pick the Quantity </Text>
               <Image source={require("../../assets/exclamation-mark.png")} />
             </View>
-            <MultipleSelectList
+            <SelectList
               setSelected={(val) => setSelected(val)}
               data={data}
               save="value"

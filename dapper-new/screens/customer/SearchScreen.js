@@ -4,9 +4,9 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import SafeAreaView from 'react-native-safe-area-view'
 import { StoreContext } from '../../App'
 
-const SearchScreen = ({navigation}) => {
+const SearchScreen = ({route, navigation}) => {
 
-  const {state, setState} = React.useContext(StoreContext)
+  const {place, setPlace} = route.params
 
   return (
     <SafeAreaView style={{flex: 1}} forceInset={{top: 'always'}}>
@@ -25,12 +25,12 @@ const SearchScreen = ({navigation}) => {
           debounce={400}
           styles={inputStyles}
           onPress={(data, details = null) => {
-          setState({...state, 
-              searchAddress: data.description, 
-              searchLat: details.geometry.location.lat,
-              searchLong: details.geometry.location.lng
-          })
-          navigation.goBack()
+            setPlace({...place, 
+                searchAddress: data.description, 
+                searchLat: details.geometry.location.lat,
+                searchLong: details.geometry.location.lng
+            })
+            navigation.goBack()
         }}
     />
       </View>

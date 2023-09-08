@@ -53,68 +53,6 @@ const AppLoading = ({navigation}) => {
     })()
   }, [])
 
-
-//   React.useEffect(() => {
-//     (async () => {
-//       try{
-//         const isTouch = await AsyncStorage.getItem("isTouch")
-//         if(isTouch == "YES") {
-//           setTouch(true)
-//         }
-//         else {
-//           await AsyncStorage.setItem("isTouch", "YES")
-//           setTouch(false)
-//           setLoading(false)
-//         }
-//       }
-//       catch(err) {
-//         setTouch(false)
-//         setLoading(false)
-//       }
-//     })()
-//   }, [])
-
-//   React.useEffect(() => {
-//     if(isTouch) {
-//       (async () => {
-//         const token = await AsyncStorage.getItem("token")
-//         if(token) {
-//             console.log(token)
-//             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-//             try{
-//               const response = await axios.get(`/user/is-authenticate`)
-//               setLoading(false)
-//               if(response.status === 200) {
-//                 setState(state => ({...state, token, user: response.data.user}))
-//                 navigation.navigate("MainScreen")
-//               }
-//               else {
-//                 navigation.navigate("EmailLogin")
-//               }
-//             }
-//             catch(err) {
-//               setLoading(false)
-//               navigation.navigate("EmailLogin")
-//             }
-
-//           }
-//         else {
-//           navigation.navigate("EmailLogin")
-//         }
-//       })()
-//     }
-//     else {
-//       if(!isLoading)
-//         navigation.push("SplashScreen")
-//     }
-//   }, [isTouch, isLoading])
-
-  // React.useEffect(() => {
-  //   setTimeout(() => {
-  //     // navigation.push("Splash1")
-  //   }, 4000)
-  // }, [])
-
   return (
     <View style={styles.splashView}>
         <Image
