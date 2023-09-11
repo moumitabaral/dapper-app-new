@@ -161,8 +161,9 @@ const HomeScreen = ({navigation}) => {
               longitude: place != null?  place.searchLong : region.coords.longitude,
             }}
             locations={[
-              {latitude: "22.5724183", longitude: "88.3193267"},
-              {latitude: "22.5448", longitude: "88.3426"},
+              {latitude: -33.865173, longitude: 151.209900},
+              {latitude: -33.862173, longitude: 151.209900},
+              {latitude: -33.868173, longitude: 151.209100},
             ]} 
           />
         </View>

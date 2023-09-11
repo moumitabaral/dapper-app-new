@@ -84,7 +84,7 @@ function BarberHomeScreen({ navigation }) {
               <TouchableOpacity
                 style={styles.itemContainer}
                 activeOpacity={1}
-                // onPress={() => navigation.navigate("CompletedRequestScreen")}
+                onPress={() => navigation.navigate("CompletedRequestScreen")}
               >
                 <View style={styles.itemContainerFirstElement}>
                   <Image source={require("../../assets/check.png")} />
@@ -98,7 +98,7 @@ function BarberHomeScreen({ navigation }) {
               <TouchableOpacity
                 style={styles.itemContainer}
                 activeOpacity={1}
-                // onPress={() => navigation.navigate("PendingRequestScreen")}
+                onPress={() => navigation.navigate("PendingRequestScreen")}
               >
                 <View style={styles.itemContainerFirstElement}>
                   <Image source={require("../../assets/wall-clock.png")} />
@@ -112,7 +112,7 @@ function BarberHomeScreen({ navigation }) {
               <TouchableOpacity
                 style={styles.itemContainer}
                 activeOpacity={1}
-                // onPress={() => navigation.navigate("CancelRequestScreen")}
+                onPress={() => navigation.navigate("CancelRequestScreen")}
               >
                 <View style={styles.itemContainerFirstElement}>
                   <Image source={require("../../assets/close.png")} />

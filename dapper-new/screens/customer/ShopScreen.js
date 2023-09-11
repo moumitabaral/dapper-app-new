@@ -99,19 +99,6 @@ const ShopScreen = ({route, navigation}) => {
             <Text style={{fontSize: 18, fontWeight: "bold"}}>$ {item.price}</Text>
           </View>
         </View>
-        
-        {cart.includes(item.id) ? (
-          <Button buttonStyle={styles.removeButtonStyle} onPress={() => setCart(cart => {
-            cart.splice(cart.indexOf(item.id), 1)
-            return [...cart]
-          })}>
-            <Feather name="trash-2" size={20} color="white" />  Remove
-          </Button>
-        ) : (
-          <Button buttonStyle={styles.buttonStyle} onPress={() => setCart(cart => [...cart, item.id])}>
-            <Entypo name="plus" size={24} color="white" />  Add
-          </Button>
-        )}
       </TouchableOpacity>
     )
   }
@@ -286,11 +273,9 @@ const ShopScreen = ({route, navigation}) => {
 
           </View>
           
-          {cart.length > 0 && (
-            <View style={styles.buttonContainer}>
-              <Button buttonStyle={styles.buttonStyle} size={'lg'} onPress={() => navigation.navigate("AppointmentBooking")}>Appointment</Button>
-            </View>
-          )}
+          <View style={styles.buttonContainer}>
+            <Button buttonStyle={styles.buttonStyle} size={'lg'} onPress={() => navigation.navigate("AppointmentBooking", {shop})}>Appointment</Button>
+          </View>
         </ScrollView>
       </SafeAreaView>
   )

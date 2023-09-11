@@ -14,11 +14,17 @@ import {
   MultipleSelectList,
   SelectList,
 } from "react-native-dropdown-select-list";
+import { Table, Row, Rows } from 'react-native-table-component';
+import Checkbox from 'expo-checkbox';
 
-function BarberBooking(props) {
+function BarberBooking({route, navigation}) {
   const [index, setIndex] = React.useState(0);
   const [selectedDate, setSelectedDate] = useState("");
+  const [selectedPerson, setSelectedPerson] = useState("");
+  const [selectedService, setSelectedService] = useState([]);
   const [selected, setSelected] = React.useState("");
+  const [services, setServices] = React.useState([]);
+  const [table, setTableData] =  React.useState([])
 
   const data = [
     { key: "1", value: "1 Person" },
@@ -27,10 +33,14 @@ function BarberBooking(props) {
     { key: "4", value: "4 Person" },
   ];
 
-  const services = [
-    { key: "1", value: "Trim/Cut Head Hair" },
-    { key: "2", value: "Shave" },
-  ];
+  React.useEffect(() => {
+    let services = route.params.shop.services.map(service => ({key: service.id, value: service.name}))
+    setServices(services)
+  }, [])
+
+  React.useEffect(() => {
+    console.log({selectedService, selectedPerson})
+  }, [selectedService, selectedPerson])
 
   return (
     <SafeAreaView style={styles.droidSafeArea}>
@@ -85,7 +95,7 @@ function BarberBooking(props) {
               <Image source={require("../../assets/exclamation-mark.png")} />
             </View>
             <SelectList
-              setSelected={(val) => setSelected(val)}
+              setSelected={(val) => setSelectedPerson(val)}
               data={data}
               save="value"
               fontFamily="poppins-regular"
@@ -100,10 +110,10 @@ function BarberBooking(props) {
           </View>
           <View style={styles.formControl}>
             <View style={styles.labelWrapper}>
-              <Text style={[styles.label]}>Number of services required </Text>
+              <Text style={[styles.label]}>Number of services required</Text>
             </View>
-            <SelectList
-              setSelected={(val) => setSelected(val)}
+            <MultipleSelectList
+              setSelected={(val) => setSelectedService(val)}
               data={services}
               save="value"
               fontFamily="poppins-regular"
@@ -117,6 +127,12 @@ function BarberBooking(props) {
             />
           </View>
           <View>
+            <Table borderStyle={{borderWidth: 2, borderColor: '#D9D9D9'}}>
+              <Rows data={table} textStyle={styles.text}/>
+            </Table>
+          </View>
+
+          <View style={{marginTop: 21}}>
             <Pressable style={styles.continueButton}>
               <Text style={styles.buttonText}>Continue</Text>
             </Pressable>
@@ -192,6 +208,11 @@ const styles = StyleSheet.create({
     fontFamily: "poppins-semibold",
     textAlign: "center",
   },
+  head: { height: 40, backgroundColor: '#f1f8ff' },
+  text: { margin: 6, },
+  checkbox: {
+    // marginLeft: 15
+  }
 });
 
 export default BarberBooking;
