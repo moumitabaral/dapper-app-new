@@ -17,7 +17,7 @@ import * as ImagePicker from "expo-image-picker";
 import * as DocumentPicker from "expo-document-picker";
 // import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 
-export default function Signup({ route, navigation }) {
+export default function CustomerSignUp({ route, navigation }) {
   const { role } = route.params;
   const [submitting, setSubmitting] = React.useState(false);
   const [selectedFile, setSelectedFile] = React.useState(null);
@@ -33,19 +33,7 @@ export default function Signup({ route, navigation }) {
     lastName: "",
     email: "",
     phone: "",
-    businessName: "",
-    abn: "",
-    acn: "",
-    accountName: "",
-    bsb: "",
-    accountNumber: ""
   });
-
-  const sex = [
-    { label: "Male", value: "male" },
-    { label: "Female", value: "female" },
-    { label: "Other", value: "other" },
-  ];
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -60,90 +48,58 @@ export default function Signup({ route, navigation }) {
     }
   };
 
-  const pickDocument = async () => {
-    try {
-      let result = await DocumentPicker.getDocumentAsync({
-        type: "application/pdf",
-      });
-      alert(result.assets[0].uri);
-      console.log(result);
+  const send = async () => {
+    const formData = new FormData();
 
-      if (result.type === "success") {
-        setSelectedFile(result);
-      }
+    formData.append("role", data.role);
+    formData.append("firstName", data.firstName);
+    formData.append("lastName", data.lastName);
+    formData.append("email", data.email);
+    formData.append("phone", data.phone);
+
+    // Image
+    if (data.image) {
+      const uri =
+        Platform.OS === "android"
+          ? data.image.uri
+          : data.image.uri.replace("file://", "");
+      const filename = data.image.uri.split("/").pop();
+      const match = /\.(\w+)$/.exec(filename);
+      const ext = match?.[1];
+      const type = match ? `image/${match[1]}` : `image`;
+      console.log({uri, type, name: `image.${ext}`})
+      formData.append("image", {
+        uri: uri,
+        type: type,
+        name: `image.${ext}`,
+      });
+    } else {
+      formData.append("image", "");
+    }
+
+    setSubmitting(true);
+    setHasErr(false);
+    setErr([]);
+    try {
+      const response = await axios.post("/user/register", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      setSubmitting(false);
+      navigation.navigate("OTPVerification", { email: data.email, channel: "email" });
     } catch (err) {
-      console.log(err);
-      // if (err.type === DocumentPicker.types.cancelled) {
-      //   console.log(err);
-      // } else {
-      //   throw err;
-      // }
+      console.log(err.response.data)
+      setSubmitting(false);
+      if (err.response.status == 400) {
+        setHasErr(true);
+        setErr(err.response.data.errors);
+      } else {
+        setHasErr(true);
+        setErr(["Server error, try again later."]);
+      }
     }
   };
-
-  // const send = async () => {
-  //   const formData = new FormData();
-
-  //   formData.append("role", data.role);
-  //   formData.append("name", data.name);
-  //   formData.append("nickname", data.nickname);
-  //   formData.append("email", data.email);
-  //   formData.append("phone", data.phone);
-  //   formData.append("gender", data.gender);
-  //   formData.append("address", data.address);
-  //   formData.append("longitude", data.longitude);
-  //   formData.append("latitude", data.latitude);
-
-  //   if (data.image) {
-  //     const uri =
-  //       Platform.OS === "android"
-  //         ? data.image.uri
-  //         : data.image.uri.replace("file://", "");
-  //     const filename = data.image.uri.split("/").pop();
-  //     const match = /\.(\w+)$/.exec(filename);
-  //     const ext = match?.[1];
-  //     const type = match ? `image/${match[1]}` : `image`;
-  //     formData.append("image", {
-  //       uri: uri,
-  //       type: type,
-  //       name: `image.${ext}`,
-  //     });
-  //   } else {
-  //     formData.append("image", "");
-  //   }
-
-  //   setSubmitting(true);
-  //   setHasErr(false);
-  //   setErr([]);
-  //   try {
-  //     const response = await axios.post("/user/register", formData, {
-  //       headers: {
-  //         "Content-Type": "multipart/form-data",
-  //       },
-  //     });
-  //     setSubmitting(false);
-  //     // navigation.navigate("OTPVerification", { email: data.email });
-  //   } catch (err) {
-  //     setSubmitting(false);
-  //     if (err.response.status == 400) {
-  //       setHasErr(true);
-  //       setErr(err.response.data.errors);
-  //     } else {
-  //       setHasErr(true);
-  //       setErr(["Server error, try again later."]);
-  //     }
-  //   }
-  // };
-
-  const send = async() => {
-    setSubmitting(true)
-
-    setTimeout(() => {
-      alert("New Account Is Register")
-      setSubmitting(false)
-      navigation.navigate("EmailLogin")
-    }, 2000)
-  }
 
   return (
     <SafeAreaView style={{ flex: 1 }} forceInset={{ top: "alaways" }}>
@@ -234,17 +190,6 @@ export default function Signup({ route, navigation }) {
             }
           />
 
-          {/* <TextInput
-            style={styles.input}
-            cursorColor="black"
-            value={data.address}
-            placeholder="Address"
-            // onPressIn={() =>
-            //   navigation.navigate("SearchScreen", { data, setData })
-            // }
-            autoCorrect={false}
-          /> */}
-
           <Input
             placeholder="+61 41 234 567"
             containerStyle={styles.containerStyle}
@@ -255,102 +200,6 @@ export default function Signup({ route, navigation }) {
               setData((data) => ({ ...data, phone: text }))
             }
           />
-
-          <Input
-            placeholder="Business Name"
-            containerStyle={styles.containerStyle}
-            inputContainerStyle={styles.inputContainerStyle}
-            inputStyle={styles.inputStyle}
-            errorStyle={styles.errorStyle}
-            onChangeText={(text) =>
-              setData((data) => ({ ...data, businessName: text }))
-            }
-          />
-          <Input
-            placeholder="ABN"
-            containerStyle={styles.containerStyle}
-            inputContainerStyle={styles.inputContainerStyle}
-            inputStyle={styles.inputStyle}
-            errorStyle={styles.errorStyle}
-            onChangeText={(text) => setData((data) => ({ ...data, abn: text }))}
-          />
-
-          <Input
-            placeholder="ACN(optional)"
-            containerStyle={styles.containerStyle}
-            inputContainerStyle={styles.inputContainerStyle}
-            inputStyle={styles.inputStyle}
-            errorStyle={styles.errorStyle}
-            onChangeText={(text) => setData((data) => ({ ...data, acn: text }))}
-          />
-
-          <Input
-            placeholder="Account name"
-            containerStyle={styles.containerStyle}
-            inputContainerStyle={styles.inputContainerStyle}
-            inputStyle={styles.inputStyle}
-            errorStyle={styles.errorStyle}
-            onChangeText={(text) => setData((data) => ({ ...data, accountName: text }))}
-          />
-
-          <Input
-            placeholder="BSB"
-            containerStyle={styles.containerStyle}
-            inputContainerStyle={styles.inputContainerStyle}
-            inputStyle={styles.inputStyle}
-            errorStyle={styles.errorStyle}
-            onChangeText={(text) => setData((data) => ({ ...data, bsb: text }))}
-          />
-
-          <Input
-            placeholder="Account number"
-            containerStyle={styles.containerStyle}
-            inputContainerStyle={styles.inputContainerStyle}
-            inputStyle={styles.inputStyle}
-            errorStyle={styles.errorStyle}
-            onChangeText={(text) =>
-              setData((data) => ({ ...data, accountNumber: text }))
-            }
-          />
-
-          <TouchableOpacity onPress={pickDocument}>
-            <View style={styles.uploadDocumentContainer}>
-              <Text style={styles.uploadText}>
-                ABN, Insurance, Certificate, police check, working with
-                children, drivers license and driving record
-              </Text>
-              <Image
-                source={require("../../assets/uil_upload.png")}
-                style={{ marginTop: 20 }}
-              />
-              <Text style={[styles.uploadText, styles.uploadTextColor]}>
-                Click to upload here
-              </Text>
-            </View>
-            <Text style={styles.fileText}>
-              Accepted files are pdf. Max 2mb upload
-            </Text>
-          </TouchableOpacity>
-
-          {/* <View style={styles.dropdownContainer}>
-            <Dropdown
-              data={sex}
-              value={data.gender}
-              search
-              maxHeight={300}
-              labelField="label"
-              valueField="value"
-              placeholder="Select Gender"
-              style={styles.dropdown}
-              placeholderStyle={styles.placeholderStyle}
-              selectedTextStyle={styles.selectedTextStyle}
-              inputSearchStyle={styles.inputSearchStyle}
-              itemTextStyle={styles.placeholderStyle}
-              onChange={(item) =>
-                setData((data) => ({ ...data, gender: item.value }))
-              }
-            />
-          </View> */}
 
           <Button
             buttonStyle={styles.buttonStyle}

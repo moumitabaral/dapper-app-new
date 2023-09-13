@@ -1,9 +1,9 @@
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { AntDesign } from '@expo/vector-icons';
-import { Ionicons } from '@expo/vector-icons';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Feather } from '@expo/vector-icons';
+import { AntDesign } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { FontAwesome5 } from "@expo/vector-icons";
 import CustomerNotificationStack from '../stack/Customer/CustomerNotificationStack';
 import CustomerChatStack from '../stack/Customer/CustomerChatStack';
 import CustomerProfileStack from '../stack/Customer/CustomerProfileStack';
@@ -32,7 +32,7 @@ const CustomerTab = () => {
                 options={{
                     tabBarLabel: 'Home',
                     tabBarIcon: ({ color, size }) => (
-                        <Ionicons name="home-outline" size={24} color={color} />
+                        <AntDesign name="home" size={20} color={color} />
                     ),
                 }}
             />
@@ -43,7 +43,11 @@ const CustomerTab = () => {
                 options={{
                     tabBarLabel: 'Booking',
                     tabBarIcon: ({ color, size }) => (
-                        <MaterialCommunityIcons name="calendar-clock-outline" size={24} color={color} />
+                        <MaterialCommunityIcons
+                            name="calendar-clock-outline"
+                            size={20}
+                            color={color}
+                        />
                     ),
                 }}
             />
@@ -54,7 +58,7 @@ const CustomerTab = () => {
                 options={{
                     tabBarLabel: 'Notification',
                     tabBarIcon: ({ color, size }) => (
-                        <Feather name="shopping-bag" size={24} color={color} />
+                        <FontAwesome5 name="bell" size={20} color={color} />
                     ),
                 }}
             />
@@ -65,7 +69,7 @@ const CustomerTab = () => {
                 options={{
                     tabBarLabel: 'Inbox',
                     tabBarIcon: ({ color, size }) => (
-                        <AntDesign name="message1" size={24} color={color} />
+                        <FontAwesome5 name="envelope" size={20} color={color} />
                     ),
                 }}
             />
@@ -76,7 +80,11 @@ const CustomerTab = () => {
                 options={{
                     tabBarLabel: 'Profile',
                     tabBarIcon: ({ color, size }) => (
-                        <MaterialCommunityIcons name="account-circle-outline" size={30} color={color} />
+                        <MaterialCommunityIcons
+                            name="account-circle-outline"
+                            size={20}
+                            color={color}
+                        />
                     ),
                 }}
             />

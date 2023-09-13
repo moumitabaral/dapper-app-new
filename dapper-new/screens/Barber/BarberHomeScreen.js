@@ -7,24 +7,25 @@ import {
   TouchableOpacity,
 } from "react-native-gesture-handler";
 import { AntDesign, MaterialIcons } from "@expo/vector-icons";
-import axios from "axios";
 import { SafeAreaView } from "react-native-safe-area-context";
+import axios from "../../utils";
 
 function BarberHomeScreen({ navigation }) {
   const { state, setState } = React.useContext(StoreContext);
   const [isLoading, setLoading] = React.useState(false);
   const [refreshing, setRefreshing] = React.useState(false);
   const [data, setData] = React.useState({
-    total_income: 150,
-    total_cancel: 2,
-    total_pending: 11,
-    total_completed: 2,
+    total_income: 0,
+    total_cancel: 0,
+    total_pending: 0,
+    total_completed: 0,
   });
   const loadData = () => {
     setLoading(true);
     axios
       .get(`/shop/statistics/`)
       .then((response) => {
+        console.log(response)
         if (response.status == 200) {
           setData({
             total_income: response.data.shop.total_income,
@@ -34,6 +35,9 @@ function BarberHomeScreen({ navigation }) {
           });
         }
       })
+      .catch((err) => {
+        console.log(err.response.data)
+      }) 
       .finally(() => setLoading(false));
   };
 

@@ -12,7 +12,7 @@ import Svg, { Circle, Rect, Path } from 'react-native-svg';
 import * as Linking from 'expo-linking';
 
 
-const BarberProfileScreen = ({navigation}) => {
+const CustomerProfileScreen = ({navigation}) => {
 
   const {state, setState} = React.useContext(StoreContext)
   const [user, setUser]  = React.useState(null)
@@ -275,4 +275,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default BarberProfileScreen
+export default CustomerProfileScreen

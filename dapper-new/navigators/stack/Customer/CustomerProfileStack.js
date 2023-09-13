@@ -1,6 +1,6 @@
 import { createStackNavigator } from "@react-navigation/stack";
-import BarberProfileScreen from "../../../screens/Barber/BarberProfileScreen";
 import DeleteAccountStack from "./DeleteAccountStack";
+import CustomerProfileScreen from "../../../screens/customer/CustomerProfileScreen";
 
 const Stack = createStackNavigator();
 
@@ -11,7 +11,7 @@ function CustomerProfileStack() {
         headerShown: false,
       }}
     >
-      <Stack.Screen name="BarberProfile" component={BarberProfileScreen} />
+      <Stack.Screen name="CustomerProfile" component={CustomerProfileScreen} />
       <Stack.Screen name="DeleteAccount" component={DeleteAccountStack} />
     </Stack.Navigator>
   );

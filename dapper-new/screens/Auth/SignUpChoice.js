@@ -15,14 +15,14 @@ export default function SignupChoice({ navigation }) {
       <View style={styles.signupContainer}>
         <Pressable
           style={styles.barberContainer}
-          onPress={() => navigation.push("Signup", { role: "BARBAR" })}
+          onPress={() => navigation.push("BarberSignUp", { role: "BARBAR" })}
         >
           <Image source={require("../../assets/Barber.png")} />
           <Text style={styles.signupchoiceText}>I’m a Barber</Text>
         </Pressable>
         <Pressable
           style={styles.customerContainer}
-          onPress={() => navigation.push("Signup", { role: "CUSTOMER" })}
+          onPress={() => navigation.push("CustomerSignUp", { role: "CUSTOMER" })}
         >
           <Image source={require("../../assets/Customer.png")} />
           <Text style={[styles.signupchoiceText, styles.customerTextcolor]}>

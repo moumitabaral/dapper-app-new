@@ -64,6 +64,7 @@ const OTPVerification = ({route, navigation}) => {
              }
            }
            catch(err) {
+            console.log(err.response.data)
              setSubmitting(false)
              if(err.response.status === 401) {
                  setHasError(true)
