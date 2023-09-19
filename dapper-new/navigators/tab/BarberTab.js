@@ -4,12 +4,13 @@ import { AntDesign } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
-import BarberMainStack from "../stack/Barber/BarbarMainStack";
-import BarberBookingStack from "../stack/Barber/BarbarBookingStack";
-import BarberNotificationStack from "../stack/Barber/BarbarNotificationStack";
-import BarberChatStack from "../stack/Barber/BarbarChatStack";
-import BarberProfileStack from "../stack/Barber/BarbarProfileStack";
 import { StyleSheet } from "react-native";
+
+import BarbarMainStack from "../stack/barbar/Main";
+import BarbarBookingStack from "../stack/barbar/Booking";
+import BarbarNotificationStack from "../stack/barbar/Notification";
+import BarbarChatStack from "../stack/barbar/Chat";
+import ProfileScreen from "../../screens/barbar/ProfileScreen";
 
 const BarbarTab = () => {
   const Tab = createBottomTabNavigator();
@@ -33,7 +34,7 @@ const BarbarTab = () => {
     >
       <Tab.Screen
         name="Home"
-        component={BarberMainStack}
+        component={BarbarMainStack}
         options={{
           tabBarLabel: "Home",
 
@@ -45,7 +46,7 @@ const BarbarTab = () => {
 
       <Tab.Screen
         name="Task"
-        component={BarberBookingStack}
+        component={BarbarBookingStack}
         options={{
           tabBarLabel: "Task",
 
@@ -61,7 +62,7 @@ const BarbarTab = () => {
 
       <Tab.Screen
         name="Notification"
-        component={BarberNotificationStack}
+        component={BarbarNotificationStack}
         options={{
           tabBarLabel: "Notification",
 
@@ -73,7 +74,7 @@ const BarbarTab = () => {
 
       <Tab.Screen
         name="Message"
-        component={BarberChatStack}
+        component={BarbarChatStack}
         options={{
           tabBarLabel: "Inbox",
 
@@ -85,7 +86,7 @@ const BarbarTab = () => {
 
       <Tab.Screen
         name="Profile"
-        component={BarberProfileStack}
+        component={ProfileScreen}
         options={{
           tabBarLabel: "Profile",
 

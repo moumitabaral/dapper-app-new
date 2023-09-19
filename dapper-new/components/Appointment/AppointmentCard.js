@@ -60,7 +60,7 @@ const AppointmentCard = ({appointment}) => {
       generateBoxShadowStyle(-4, 10, '#171717', 1, 10, 6, '#171717');
 
     return (
-        <TouchableOpacity style={{paddingVertical: 10}} activeOpacity={1}>
+        <TouchableOpacity style={{margin: 10}} activeOpacity={1}>
             <View style={[{width: "100%", borderWidth: 1, borderColor: "#AE8447", borderRadius: 9,  padding: 10, backgroundColor: "white"}]}>
                 <View style={{flexDirection: "row", justifyContent: "space-between", alignItems: "center"}}>
                     <Avatar 

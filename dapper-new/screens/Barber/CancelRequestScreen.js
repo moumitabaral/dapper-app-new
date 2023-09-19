@@ -1,7 +1,7 @@
 import React from 'react'
 import { RefreshControl, ScrollView, StyleSheet, View, Text, ActivityIndicator, FlatList } from 'react-native'
 import SafeAreaView from 'react-native-safe-area-view'
-import AppointmentCard from '../../component/Appointment/AppointmentCard'
+import AppointmentCard from '../../components/Appointment/AppointmentCard'
 import axios from '../../utils'
 
 const CancelRequest = () => {

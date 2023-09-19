@@ -6,7 +6,7 @@ import axios from '../../utils'
 import { AntDesign } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
-import AppointmentCard from '../../component/Appointment/AppointmentCard'
+import AppointmentCard from '../../components/Appointment/AppointmentCard'
 
 const UpcommingAppointmentScreen = ({navigation}) => {
 

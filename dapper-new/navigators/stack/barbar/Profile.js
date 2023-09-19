@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { createNativeStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator } from '@react-navigation/stack';
 import EditStorefront from '../../../screens/barbar/EditStorefront';
 import ProfileScreen from '../../../screens/barbar/ProfileScreen';
 import ListServiceScreen from '../../../screens/barbar/ListServiceScreen';
@@ -9,7 +9,7 @@ import EditProfile from '../../../screens/barbar/EditProfileScreen';
 import SearchScreen from '../../../screens/SearchScreen';
 
 export default function BarbarProfileStack() {
-    const Stack = createNativeStackNavigator();
+    const Stack = createStackNavigator();
     
     return (
         <Stack.Navigator 

@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { createNativeStackNavigator } from '@react-navigation/stack';
-import Notification from '../../../screens/Notificatation';
+import { createStackNavigator } from '@react-navigation/stack';
+// import Notification from '../../../screens/Notificatation';
 
 export default function BarbarNotificationStack () {
-    const Stack = createNativeStackNavigator();
+    const Stack = createStackNavigator();
     
     return (
         <Stack.Navigator 
@@ -18,7 +18,7 @@ export default function BarbarNotificationStack () {
                     fontWeight: 'bold',
                 },
             }}>
-                <Stack.Screen name="NotificationScreen" component={Notification} options={{title: "Notification"}} />
+                {/* <Stack.Screen name="NotificationScreen" component={Notification} options={{title: "Notification"}} /> */}
             </Stack.Navigator>
     );
 }

@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { createNativeStackNavigator } from '@react-navigation/stack';
-import ChatListScreen from '../../../screens/ChatListScreen';
-import ChatScreen from '../../../screens/ChatScreen';
+import { createStackNavigator } from '@react-navigation/stack';
+// import ChatListScreen from '../../../screens/ChatListScreen';
+// import ChatScreen from '../../../screens/ChatScreen';
 
 export default function BarbarChatStack () {
-    const Stack = createNativeStackNavigator();
+    const Stack = createStackNavigator();
     
     return (
         <Stack.Navigator 
@@ -19,8 +19,8 @@ export default function BarbarChatStack () {
                     fontWeight: 'bold',
                 },
             }}>
-                <Stack.Screen name="ChatListScreen" component={ChatListScreen} options={{title: "Message"}} />
-                <Stack.Screen name="ChatScreen" component={ChatScreen} options={{headerShown: false}} />
+                {/* <Stack.Screen name="ChatListScreen" component={ChatListScreen} options={{title: "Message"}} /> */}
+                {/* <Stack.Screen name="ChatScreen" component={ChatScreen} options={{headerShown: false}} /> */}
             </Stack.Navigator>
     );
 }

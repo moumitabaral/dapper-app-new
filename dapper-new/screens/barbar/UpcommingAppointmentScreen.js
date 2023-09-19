@@ -23,10 +23,9 @@ const UpcommingAppointmentScreen = ({navigation}) => {
         axios.get("/appointment?status=PROGRESSING")
         .then(response => {
             if(response.status == 200){
-                setProgressingAppointments(response.data)
+              setProgressingAppointments(response.data)
             }
         })
-        .catch(err => alert("Something went wrong"))
 
         axios.get("/appointment?status=APPROVE")
         .then(response => {
@@ -34,7 +33,6 @@ const UpcommingAppointmentScreen = ({navigation}) => {
                 setUpcommingAppointments(response.data)
             }
         })
-        .catch(err => alert("Something went wrong"))
 
 
         axios.get("/appointment?status=COMPLETE")
@@ -43,7 +41,6 @@ const UpcommingAppointmentScreen = ({navigation}) => {
                 setHistoryAppointments(response.data)
             }
         })
-        .catch(err => alert("Something went wrong"))
     }
 
     const onRefresh = () => {
@@ -92,6 +89,7 @@ const UpcommingAppointmentScreen = ({navigation}) => {
         <ScrollView
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}
+            contentContainerStyle={{flex: 1}}
             refreshControl={
                 <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }
@@ -99,7 +97,7 @@ const UpcommingAppointmentScreen = ({navigation}) => {
 
             <View style={styles.tabContainer}>
                 <TouchableOpacity style={[styles.tab, activeTab == 'progressing' && styles.activeTab]} activeOpacity={1} onPress={() => setActiveTab("progressing")}>
-                    <Text style={styles.tabTitle}>Progressing</Text>
+                    <Text style={styles.tabTitle}>In Progress</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={[styles.tab, activeTab == 'upcomming' && styles.activeTab]} activeOpacity={1} onPress={() => setActiveTab("upcomming")}>
                     <Text style={styles.tabTitle}>Upcomming</Text>
@@ -108,11 +106,31 @@ const UpcommingAppointmentScreen = ({navigation}) => {
                     <Text style={styles.tabTitle}>History</Text>
                 </TouchableOpacity>
             </View> 
-            
 
-            {activeTab == "progressing" && (progressings.map((appointment, index) => <AppointmentCard key={index} appointment={appointment} />))}
-            {activeTab == "upcomming" && (upcommings.map((appointment, index) => <AppointmentCard key={index} appointment={appointment} />))}
-            {activeTab == "history" && (histories.map((appointment, index) => <AppointmentCard key={index} appointment={appointment} />))}
+
+            {activeTab == "progressing" ? 
+                progressings.length == 0 ? 
+                  (<View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
+                      <Text style={{fontSize: 18,marginTop: 50}}>There are no jobs in progress</Text>
+                  </View>) : 
+                  (progressings.map((appointment, index) => <AppointmentCard key={index} appointment={appointment} />)) 
+              : null}
+            
+            {activeTab == "upcomming" ? 
+                upcommings.length == 0 ? 
+                  (<View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
+                      <Text style={{fontSize: 18,marginTop: 50}}>There are no upcomming jobs</Text>
+                  </View>) : 
+                  (upcommings.map((appointment, index) => <AppointmentCard key={index} appointment={appointment} />))
+              : null}
+
+            {activeTab == "history" ? 
+                histories.length == 0 ? 
+                (<View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
+                    <Text style={{fontSize: 18,marginTop: 50}}>There are no jobs</Text>
+                </View>) : 
+                (histories.map((appointment, index) => <AppointmentCard key={index} appointment={appointment} />))
+              : null}
 
         </ScrollView>
       </View>
@@ -123,11 +141,11 @@ const UpcommingAppointmentScreen = ({navigation}) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 14,
         backgroundColor: '#FDFDFD',
     },
     tabContainer: {
-        flex: 0.1,
+        backgroundColor: "#e6e6e6",
+        paddingTop: 40,
         flexDirection: "row",
         justifyContent: "space-around",
         alignItems: 'center',
@@ -139,11 +157,11 @@ const styles = StyleSheet.create({
         width: "33.33%",
         paddingBottom: 10,
         borderBottomWidth: 2,
-        borderBottomColor: "#CBCBCB",
+        borderBottomColor: "#f2f2f2",
       },
       activeTab: {
-        borderBottomWidth: 2,
-        borderBottomColor: "#0088E0",
+        borderBottomWidth: 4,
+        borderBottomColor: "#AE8447",
       },
       tabTitle: {
         fontSize: 18,
